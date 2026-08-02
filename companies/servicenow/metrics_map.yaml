@@ -1,0 +1,29 @@
+metrics:
+  cash_and_equivalents:
+    source: sec_companyfacts
+    concepts:
+      - CashAndCashEquivalentsAtCarryingValue
+      - CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents
+  gaap_net_income:
+    source: sec_companyfacts
+    concepts:
+      - NetIncomeLoss
+      - ProfitLoss
+  stock_based_compensation:
+    source: sec_companyfacts
+    concepts:
+      - ShareBasedCompensation
+  diluted_share_count:
+    source: sec_companyfacts
+    concepts:
+      - WeightedAverageNumberOfDilutedSharesOutstanding
+  current_rpo_growth_constant_currency:
+    source: manual_or_earnings_release
+    aliases:
+      - constant currency current remaining performance obligations
+      - cRPO constant currency
+  creator_other_share:
+    source: manual_or_earnings_release
+    aliases:
+      - Creator and other share
+      - creator and other net new ACV

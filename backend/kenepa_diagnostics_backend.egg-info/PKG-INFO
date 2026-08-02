@@ -1,0 +1,15 @@
+Metadata-Version: 2.4
+Name: kenepa-diagnostics-backend
+Version: 0.1.0
+Summary: Kenepa — local stock health diagnostics backend
+Requires-Python: >=3.12
+Requires-Dist: alembic>=1.13.2
+Requires-Dist: fastapi>=0.111.0
+Requires-Dist: httpx>=0.27.0
+Requires-Dist: psycopg[binary]>=3.2.1
+Requires-Dist: pydantic-settings>=2.4.0
+Requires-Dist: pytest>=8.2.2
+Requires-Dist: PyYAML>=6.0.2
+Requires-Dist: requests>=2.32.3
+Requires-Dist: SQLAlchemy>=2.0.31
+Requires-Dist: uvicorn[standard]>=0.30.1

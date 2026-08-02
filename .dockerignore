@@ -1,0 +1,12 @@
+.git
+.env
+frontend/node_modules
+frontend/dist
+backend/**/*.egg-info
+**/__pycache__
+**/*.pyc
+.pytest_cache
+data/raw/sec/*
+data/raw/ir/*
+data/processed/*
+reports/*.md

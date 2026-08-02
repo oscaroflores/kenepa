@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:wght@700&family=Roboto+Flex:opsz,wght@8..144,100..1000&family=Yusei+Magic&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 0 0% 7%;
+  --muted: 0 0% 7%;
+  --border: 0 0% 7%;
+  --card: 0 0% 100%;
+  --accent: #FF5D00;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  color: hsl(var(--foreground));
+  background: #ffffff;
+  font-family: 'Roboto Flex', system-ui, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Crimson Text', serif;
+  font-weight: 700 !important;
+}
+
+.font-brand {
+  font-family: 'Yusei Magic', system-ui, sans-serif;
+}
+
+body::before {
+  content: none;
+}
+
+* {
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+a {
+  color: inherit;
+}
+
+.density-table th,
+.density-table td {
+  border-bottom: 1px solid #111111;
+  padding: 0.65rem 0.75rem;
+  text-align: left;
+}
+
+.status-bear { color: #FF5D00; }
+.status-base { color: #FF5D00; }
+.status-bull,
+.status-strong_bull { color: #FF5D00; }
+.status-missing { color: #111111; }
