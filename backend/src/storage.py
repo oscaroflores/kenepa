@@ -53,7 +53,10 @@ def _parse_date(value: str | None) -> date | None:
 
 def _profile_path() -> Path:
     settings = get_settings()
-    return settings.companies_dir / "servicenow" / "profile.yaml"
+    profile_path = settings.companies_dir / "servicenow" / "profile.yaml"
+    if profile_path.exists():
+        return profile_path
+    return Path(__file__).resolve().parents[2] / "companies" / "servicenow" / "profile.yaml"
 
 
 def load_company_profile() -> dict[str, Any]:
