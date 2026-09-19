@@ -10,7 +10,7 @@ from sqlalchemy import desc, select
 from sqlalchemy.orm import Session
 
 from src.config import get_settings
-from src.db import SessionLocal, get_session
+from src.db import SessionLocal, get_session, initialize_runtime_schema
 from src.models import Company, ModelRun, SourceDocument
 from src.providers.sec_client import SECClient
 from src.schemas import DiagnosisOut, ManualMetricIn, RefreshResult, SignalResultOut
@@ -33,6 +33,7 @@ from src.model.rules import evaluate_metrics
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     try:
+        initialize_runtime_schema()
         with SessionLocal() as session:
             seed_default_company(session)
             session.commit()

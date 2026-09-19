@@ -18,6 +18,8 @@ class Settings(BaseSettings):
     @field_validator("database_url")
     @classmethod
     def use_declared_postgres_driver(cls, value: str) -> str:
+        if os.getenv("VERCEL") and value == "sqlite:///./kenepa.db":
+            return "sqlite:////tmp/kenepa.db"
         if value.startswith("postgresql://"):
             return value.replace("postgresql://", "postgresql+psycopg://", 1)
         return value

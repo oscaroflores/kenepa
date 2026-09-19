@@ -44,6 +44,20 @@ METRIC_FIELDS = [
     "discretionary_insider_selling_depressed",
 ]
 
+DEFAULT_COMPANY_PROFILE = {
+    "name": "ServiceNow, Inc.",
+    "ticker": "NOW",
+    "cik": "1373715",
+    "fiscal_year_end": "1231",
+    "exchange": "NYSE",
+    "ir_url": "https://investors.servicenow.com/",
+    "sec_ticker_url": "https://www.sec.gov/edgar/browse/?CIK=1373715",
+    "notes": [
+        "SEC EDGAR is the primary source.",
+        "Investor Relations is a controlled fallback for earnings releases and operating KPIs.",
+    ],
+}
+
 
 def _parse_date(value: str | None) -> date | None:
     if not value:
@@ -60,7 +74,10 @@ def _profile_path() -> Path:
 
 
 def load_company_profile() -> dict[str, Any]:
-    with _profile_path().open("r", encoding="utf-8") as handle:
+    profile_path = _profile_path()
+    if not profile_path.exists():
+        return DEFAULT_COMPANY_PROFILE
+    with profile_path.open("r", encoding="utf-8") as handle:
         return yaml.safe_load(handle)
 
 
