@@ -12,6 +12,7 @@ from src.config import get_settings
 from src.model.rules import Diagnosis, evaluate_metrics
 from src.models import Company, Filing, ModelRun, ModelSignalResult, QuarterlyMetric, SourceDocument
 from src.parsers.sec_facts import parse_companyfacts_to_metrics
+from src.providers.market_client import MarketClient
 from src.providers.sec_client import SECClient
 from src.report import write_markdown_report
 
@@ -382,6 +383,31 @@ def refresh_company_sources(session: Session, company: Company, sec_client: SECC
     if parsed:
         metric = ensure_metric_record(session, company, parsed["quarter"], parsed.get("fiscal_year"))
         metrics_updated = apply_parsed_metrics(metric, parsed["values"], facts_doc, parsed.get("fact_details", {}))
+        try:
+            quote = MarketClient().fetch_quote(company.ticker)
+        except Exception:
+            quote = None
+        if quote:
+            market_doc = upsert_source_document(
+                session,
+                company,
+                source_type="market_quote",
+                title=f"{company.ticker} market quote",
+                document_url=quote["url"],
+                parse_status="quoted",
+                metadata={"provider": quote["source"], "raw": quote.get("metadata", {})},
+            )
+            market_values = {"share_price_used": quote["price"]}
+            if metric.diluted_share_count:
+                market_values["market_cap"] = quote["price"] * metric.diluted_share_count
+            if market_values.get("market_cap") is not None and metric.cash_and_equivalents is not None:
+                market_values["enterprise_value"] = market_values["market_cap"] - metric.cash_and_equivalents
+            metrics_updated += apply_parsed_metrics(
+                metric,
+                market_values,
+                market_doc,
+                {field: {"provider": quote["source"], "url": quote["url"]} for field in market_values},
+            )
 
     session.flush()
     return {"filings_seen": min(len(accessions), limit), "filings_cached": filings_cached, "metrics_updated": metrics_updated}
