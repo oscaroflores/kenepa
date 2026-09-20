@@ -79,8 +79,7 @@ def evaluate_metrics(metrics: dict[str, Any], history: list[dict[str, Any]] | No
     renewal = _value(metrics, "renewal_rate")
     wins = _as_bool(_value(metrics, "named_competitive_wins"))
     if renewal is None:
-        missing.append("renewal_rate")
-        signals.append(SignalResult("moat", "Moat / renewal", "missing", "Renewal rate is missing."))
+        signals.append(SignalResult("moat", "Moat / renewal", "manual_required", "Renewal rate is not available from SEC facts; add it manually if disclosed."))
     elif renewal < 96:
         signals.append(SignalResult("moat", "Moat / renewal", "bear", f"Renewal rate is {renewal:.1f}%, below the 96% exit threshold.", True, {"value": renewal}))
         exit_signals.append("Renewal rate < 96%")
@@ -93,8 +92,7 @@ def evaluate_metrics(metrics: dict[str, Any], history: list[dict[str, Any]] | No
     creator_share = _value(metrics, "creator_other_share")
     previous_creator_share = _value(previous, "creator_other_share") if previous else None
     if creator_share is None:
-        missing.append("creator_other_share")
-        signals.append(SignalResult("ai_monetization", "AI monetization / Creator share", "missing", "Creator/other share is missing."))
+        signals.append(SignalResult("ai_monetization", "AI monetization / Creator share", "manual_required", "Creator/other share is not available from SEC facts; add it manually if disclosed."))
     elif creator_share > 25:
         signals.append(SignalResult("ai_monetization", "AI monetization / Creator share", "bull", f"Creator/other share is {creator_share:.1f}%, above the 25% bull threshold.", True, {"value": creator_share}))
         scale_in_signals.append("Creator/other share > 25%")
@@ -141,7 +139,7 @@ def evaluate_metrics(metrics: dict[str, Any], history: list[dict[str, Any]] | No
     elif len(scale_in_signals) >= 2 or triggered_bulls >= 3:
         overall = "bull"
         conclusion = "Several scale-in or bull signals are active. The model supports constructive review."
-    elif len(missing) >= 3:
+    elif missing:
         overall = "missing"
         conclusion = "Important KPIs are missing. Enter manual values with sources before relying on the diagnosis."
     else:

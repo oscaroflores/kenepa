@@ -40,4 +40,5 @@ def test_missing_metrics_are_not_invented() -> None:
 
     assert diagnosis.overall_signal == "missing"
     assert "current_rpo_growth_constant_currency" in diagnosis.missing_metrics
-    assert "renewal_rate" in diagnosis.missing_metrics
+    assert "non_gaap_operating_margin" in diagnosis.missing_metrics
+    assert "renewal_rate" not in diagnosis.missing_metrics
